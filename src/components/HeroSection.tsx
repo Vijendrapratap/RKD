@@ -4,9 +4,29 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, MapPin } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [location, setLocation] = useState("");
+  const router = useRouter();
+
+  const handleSearch = () => {
+    if (searchQuery.trim() || location.trim()) {
+      const params = new URLSearchParams();
+      if (searchQuery.trim()) params.set("q", searchQuery.trim());
+      if (location.trim()) params.set("location", location.trim());
+      router.push(`/services?${params.toString()}`);
+    } else {
+      router.push("/services");
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   return (
     <section className="relative bg-gradient-to-br from-primary/5 via-background to-secondary/20 py-16 md:py-24">
@@ -40,6 +60,7 @@ export default function HeroSection() {
                   className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={handleKeyPress}
                 />
               </div>
               <div className="flex items-center gap-2 px-3 py-2 border rounded-lg sm:w-auto">
@@ -48,9 +69,12 @@ export default function HeroSection() {
                   type="text"
                   placeholder="Enter location"
                   className="border-0 focus-visible:ring-0 focus-visible:ring-offset-0 sm:w-32"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  onKeyPress={handleKeyPress}
                 />
               </div>
-              <Button size="lg" className="sm:w-auto">
+              <Button size="lg" className="sm:w-auto" onClick={handleSearch}>
                 Search
               </Button>
             </div>

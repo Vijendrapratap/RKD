@@ -116,7 +116,7 @@ const services = [
   }
 ];
 
-export default function ServicesGrid() {
+export function ServicesGrid() {
   return (
     <section className="py-16 md:py-24 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -160,3 +160,5 @@ export default function ServicesGrid() {
     </section>
   );
 }
+
+export default ServicesGrid;
